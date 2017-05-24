@@ -137,20 +137,24 @@ namespace WebMVCClient.Controllers
 
 
             //GET EDIT
+            [HttpGet]
             public ActionResult Edit(int id)
 
             {
 
-                Student stwi = null;
+                StudentWithImage stwi = null;
+                
+
                 client.BaseAddress = new Uri("http://localhost:55973/api/");
 
-                var task = client.GetAsync("student/update?id=" + id.ToString());
+                var task = client.GetAsync("student/getdetails?id=" + id.ToString());
                 task.Wait();
 
                 var result = task.Result;
+
              if (result.IsSuccessStatusCode)
                 {
-                var readTask = result.Content.ReadAsAsync<Student>();
+                var readTask = result.Content.ReadAsAsync<StudentWithImage>();
                 readTask.Wait();
                 stwi = readTask.Result;
                  }
@@ -159,28 +163,28 @@ namespace WebMVCClient.Controllers
 
                 ModelState.AddModelError(string.Empty, "Server Error");
                 }
+                    stwi.StudentID = id;
+                    return View(stwi); 
 
-                    return View(stwi); ;
-
-                }
+            }
 
         //POST EDIT
         [HttpPost]
-        public ActionResult Edit(Student s,HttpPostedFileBase uploadFile)
+        public ActionResult Edit(StudentWithImage stwi,HttpPostedFileBase uploadFile)
         {
-            string pic = Path.GetFileName(uploadFile.FileName);
-            string path = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~/Images"), pic);
-            uploadFile.SaveAs(path);
-
-            path = "~/Images/" + pic;
-
-            var stwi = new StudentWithImage
+           
+            if (uploadFile != null)
             {
-                StudentID=s.StudentID,
-                StudentName = s.StudentName,
-                StudentLastName = s.StudentLastName,
-                ImagePath = path.ToString()
-            };
+                string pic = Path.GetFileName(uploadFile.FileName);
+                string path = Path.Combine(System.Web.Hosting.HostingEnvironment.MapPath("~/Images"), pic);
+                uploadFile.SaveAs(path);
+
+                path = "~/Images/" + pic;
+
+                
+                stwi.ImagePath = path;
+
+            }
 
             client.BaseAddress = new Uri("http://localhost:55973/api/");
 
