@@ -1,0 +1,46 @@
+﻿@model IEnumerable<WebMVCClient.ViewModels.StudentWithImage>
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+<p>
+    @Html.ActionLink("Add New Student", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            Slika
+        </th>
+        <th>
+            Ime
+        </th>
+        <th>
+            Prezime
+        </th>
+        <th>
+            Controls
+        </th>
+        
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                <img src="@Url.Content(item.ImagePath)" class="img-responsive" width="100" height="60"/>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem=>item.StudentName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.StudentLastName)
+            </td>
+            <td>
+                @Html.ActionLink("Edit","Edit",new { id = item.StudentID }) | 
+                @Html.ActionLink("Details", "Details", new { id = item.StudentID }) | 
+                @Html.ActionLink("Delete", "Delete", new { id = item.StudentID })
+            </td>
+        </tr>
+    }
+    
+</table>

@@ -1,0 +1,34 @@
+﻿@model WebMVCClient.ViewModels.StudentWithImage
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+<div>
+    <h4>Student</h4>
+    <hr/>
+    <dl class="dl-horizontal">
+        <dt>
+            Slika
+        </dt>
+        <dd>
+            <img src="@Url.Content(Model.ImagePath)" class="img-responsive" width="200" height="200"/>
+        </dd>
+        <dt>
+            Student Name:
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StudentName)
+        </dd>
+        <dt>
+            Student Last Name
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.StudentLastName)
+        </dd>
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.StudentID }) | 
+    @Html.ActionLink("Back To List","Index")
+</p>
